@@ -1,0 +1,9 @@
+{
+  "extends": "../tooling/typescript/base.json",
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "types": ["node", "bun-types"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
+}

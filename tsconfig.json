@@ -1,0 +1,10 @@
+{
+  "extends": "./tooling/typescript/base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "lib": ["ESNext"],
+    "types": ["node"]
+  },
+  "include": ["alchemy.run.ts", "env.ts"],
+  "exclude": ["node_modules"]
+}
