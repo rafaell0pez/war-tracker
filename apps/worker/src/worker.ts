@@ -58,4 +58,9 @@ app.get("/api/seed", async (c) => {
   return c.json({ message: "Seeded", count: COUNTRY_DATA.length });
 });
 
+// Serve SPA assets for non-API routes
+app.get("*", async (c) => {
+  return c.env.ASSETS.fetch(c.req.raw);
+});
+
 export default app;
