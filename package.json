@@ -3,7 +3,11 @@
   "type": "module",
   "private": true,
   "packageManager": "bun@1.2.23",
-  "workspaces": ["apps/*", "cron", "tooling/*"],
+  "workspaces": [
+    "apps/*",
+    "cron",
+    "tooling/*"
+  ],
   "scripts": {
     "dev": "cd apps/worker && bunx alchemy dev",
     "dev:web": "cd apps/web && bun run dev",

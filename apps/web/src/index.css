@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+:root {
+  --color-iran: #ef4444;
+  --color-israel: #3b82f6;
+  --color-civilian: #f59e0b;
+  --color-high: #22c55e;
+  --color-medium: #eab308;
+  --color-low: #f97316;
+  --color-very-low: #ef4444;
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background: #030712;
+  color: #e5e7eb;
+  margin: 0;
+}
+
+.font-mono {
+  font-family: "JetBrains Mono", monospace;
+}
+
+@keyframes pulse-live {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.live-pulse {
+  animation: pulse-live 2s ease-in-out infinite;
+}
+
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.count-animate {
+  animation: count-up 0.3s ease-out;
+}
