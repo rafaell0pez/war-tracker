@@ -1,12 +1,12 @@
 import { mkdirSync } from "node:fs";
 import path from "node:path";
-import Database from "better-sqlite3";
+import { Database } from "bun:sqlite";
 
 const DB_PATH = path.join(import.meta.dirname, "..", "data", "dedup.db");
 
-let db: Database.Database | null = null;
+let db: Database | null = null;
 
-function getDb(): Database.Database {
+function getDb(): Database {
   if (!db) {
     mkdirSync(path.dirname(DB_PATH), { recursive: true });
     db = new Database(DB_PATH);

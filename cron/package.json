@@ -5,11 +5,5 @@
   "scripts": {
     "start": "bun run src/run.ts",
     "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "better-sqlite3": "^11.0.0"
-  },
-  "devDependencies": {
-    "@types/better-sqlite3": "^7.6.13"
   }
 }
