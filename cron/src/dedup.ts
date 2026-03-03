@@ -1,6 +1,6 @@
+import { Database } from "bun:sqlite";
 import { mkdirSync } from "node:fs";
 import path from "node:path";
-import { Database } from "bun:sqlite";
 
 const DB_PATH = path.join(import.meta.dirname, "..", "data", "dedup.db");
 

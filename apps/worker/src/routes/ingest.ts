@@ -20,6 +20,15 @@ app.post("/", async (c) => {
     return c.json({ error: "Unauthorized" }, 401);
   }
 
+  try {
+    return await handleIngest(c);
+  } catch (err) {
+    console.error("Ingest error:", err);
+    return c.json({ error: String(err), message: (err as Error).message }, 500);
+  }
+});
+
+async function handleIngest(c: Parameters<Parameters<typeof app.post>[1]>[0]) {
   const body = await c.req.json<{
     tweets?: Array<typeof tweets.$inferInsert>;
     lossEvents?: Array<typeof lossEvents.$inferInsert>;
@@ -96,7 +105,7 @@ app.post("/", async (c) => {
   await recomputeAggregates(db);
 
   return c.json({ ok: true, results });
-});
+}
 
 async function recomputeAggregates(db: ReturnType<typeof createDb>) {
   // Delete existing aggregates
