@@ -12,6 +12,11 @@ fi
 
 cd /opt/war-tracker || exit 1
 
+# Load environment
+set -a
+source /opt/war-tracker/.env.cron
+set +a
+
 # Pull latest code
 git pull --ff-only 2>&1
 bun install --frozen-lockfile 2>&1
