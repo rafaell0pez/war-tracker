@@ -91,10 +91,23 @@ export default function ConflictMap({ countries }: Props) {
           style={{ width: "100%", height: "auto", background: "#030712" }}
         >
           <ZoomableGroup>
-            <Geographies geography={GEO_URL}>
-              {({ geographies }) =>
-                geographies.map((geo) => {
-                  const numericId = geo.id;
+            <Geographies
+              geography={GEO_URL}
+              fallback={
+                <text
+                  x={400}
+                  y={225}
+                  textAnchor="middle"
+                  fill="#6b7280"
+                  fontSize={14}
+                >
+                  Loading map...
+                </text>
+              }
+            >
+              {({ geographies }: { geographies: any[] }) =>
+                geographies.map((geo: any, i: number) => {
+                  const numericId = String(geo.id);
                   const alpha2 = NUMERIC_TO_ALPHA2[numericId];
                   const country = alpha2
                     ? countryByCode.get(alpha2)
@@ -108,12 +121,12 @@ export default function ConflictMap({ countries }: Props) {
 
                   return (
                     <Geography
-                      key={geo.rsmKey}
+                      key={geo.rsmKey ?? geo.id ?? i}
                       geography={geo}
                       fill={fill}
                       stroke="#111827"
                       strokeWidth={0.5}
-                      onMouseEnter={(evt) => {
+                      onMouseEnter={(evt: React.MouseEvent) => {
                         if (country) {
                           const target = evt.target as SVGElement;
                           target.style.fill = hoverFill;
@@ -124,13 +137,16 @@ export default function ConflictMap({ countries }: Props) {
                           });
                         }
                       }}
-                      onMouseLeave={(evt) => {
+                      onMouseLeave={(evt: React.MouseEvent) => {
                         const target = evt.target as SVGElement;
                         target.style.fill = fill;
                         setTooltip(null);
                       }}
                       style={{
-                        default: { outline: "none", cursor: country ? "pointer" : "default" },
+                        default: {
+                          outline: "none",
+                          cursor: country ? "pointer" : "default",
+                        },
                         hover: { outline: "none" },
                         pressed: { outline: "none" },
                       }}
