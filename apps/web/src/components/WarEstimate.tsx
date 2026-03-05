@@ -35,12 +35,17 @@ export default function WarEstimate({ estimate }: Props) {
         <h3 className="font-mono text-sm font-bold text-gray-300 uppercase tracking-wider">
           War Estimate
         </h3>
-        <span className="text-xs text-gray-500">
-          AI Confidence:{" "}
-          <span className="font-mono font-semibold text-gray-400">
-            {confidenceLabel(estimate.confidenceLevel)}
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-mono px-1.5 py-0.5 rounded bg-gray-800 text-gray-500 border border-gray-700">
+            AI
           </span>
-        </span>
+          <span className="text-xs text-gray-500">
+            Confidence:{" "}
+            <span className="font-mono font-semibold text-gray-400">
+              {confidenceLabel(estimate.confidenceLevel)}
+            </span>
+          </span>
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-4 mb-3">
@@ -70,7 +75,7 @@ export default function WarEstimate({ estimate }: Props) {
         )}
       </div>
 
-      <p className="text-sm text-gray-400 leading-relaxed">
+      <p className="text-sm text-gray-300 leading-relaxed">
         {estimate.summary}
       </p>
 

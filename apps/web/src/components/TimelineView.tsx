@@ -1,3 +1,12 @@
+import {
+  AlertTriangle,
+  ArrowDownCircle,
+  Crosshair,
+  DollarSign,
+  Handshake,
+  Heart,
+  Wrench,
+} from "lucide-react";
 import type { TimelineEvent } from "../lib/api";
 import { confidenceColor } from "../lib/format";
 
@@ -5,15 +14,17 @@ interface Props {
   events: TimelineEvent[];
 }
 
-const CATEGORY_ICON: Record<string, string> = {
-  military_operation: "//",
-  diplomatic: "~~",
-  escalation: "!!",
-  de_escalation: "--",
-  humanitarian: "++",
-  sanctions: "$$",
-  infrastructure: "##",
+const CATEGORY_ICON: Record<string, React.ReactNode> = {
+  military_operation: <Crosshair className="w-3.5 h-3.5 text-red-400" />,
+  diplomatic: <Handshake className="w-3.5 h-3.5 text-blue-400" />,
+  escalation: <AlertTriangle className="w-3.5 h-3.5 text-orange-400" />,
+  de_escalation: <ArrowDownCircle className="w-3.5 h-3.5 text-green-400" />,
+  humanitarian: <Heart className="w-3.5 h-3.5 text-pink-400" />,
+  sanctions: <DollarSign className="w-3.5 h-3.5 text-yellow-400" />,
+  infrastructure: <Wrench className="w-3.5 h-3.5 text-gray-400" />,
 };
+
+const DEFAULT_ICON = <Crosshair className="w-3.5 h-3.5 text-gray-500" />;
 
 export default function TimelineView({ events }: Props) {
   if (events.length === 0) {
@@ -36,9 +47,7 @@ export default function TimelineView({ events }: Props) {
         {events.map((event) => (
           <div key={event.id} className="flex items-start gap-3">
             <div className="flex-shrink-0 mt-0.5">
-              <span className="font-mono text-xs text-gray-600">
-                {CATEGORY_ICON[event.category] ?? "**"}
-              </span>
+              {CATEGORY_ICON[event.category] ?? DEFAULT_ICON}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-0.5">

@@ -14,7 +14,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-950">
       {/* Header */}
-      <header className="border-b border-gray-800 px-4 py-3">
+      <header className="border-b border-gray-800 px-4 py-4 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <h1 className="text-lg font-semibold text-gray-100 tracking-tight">
@@ -39,7 +39,7 @@ export default function App() {
       </header>
 
       {/* Main content */}
-      <main className="max-w-6xl mx-auto px-4 py-6 space-y-6">
+      <main className="max-w-6xl mx-auto px-4 py-8 space-y-8">
         {isLoading && (
           <div className="text-center py-20">
             <p className="font-mono text-sm text-gray-500">Loading data...</p>
@@ -78,7 +78,7 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-gray-800 px-4 py-4 mt-8">
+      <footer className="border-t border-gray-800 px-4 py-6 mt-12">
         <div className="max-w-6xl mx-auto text-center">
           <p className="text-xs text-gray-600">
             Data aggregated from verified OSINT sources on X/Twitter.

@@ -40,15 +40,17 @@ function LossCard({
   title,
   color,
   borderColor,
+  accentColor,
   data,
 }: {
   title: string;
   color: string;
   borderColor: string;
+  accentColor: string;
   data: Record<string, LossData> | undefined;
 }) {
   return (
-    <div className={`border ${borderColor} rounded-lg bg-gray-900/50 p-4`}>
+    <div className={`border ${borderColor} border-l-2 ${accentColor} rounded-lg bg-gray-900/50 p-4`}>
       <h3
         className={`font-mono text-sm font-bold ${color} mb-3 uppercase tracking-wider`}
       >
@@ -69,7 +71,7 @@ function LossCard({
                 {categoryLabel(cat)}
               </span>
               <div className="text-right">
-                <span className="font-mono text-sm font-semibold text-gray-100 count-animate">
+                <span className="font-mono text-sm font-semibold text-gray-100 tabular-nums count-animate">
                   {formatter(d.highConfidence)}
                 </span>
                 {d.total !== d.highConfidence && (
@@ -130,18 +132,21 @@ export default function LossCounters({ losses }: Props) {
           title="Iran Axis"
           color="text-red-400"
           borderColor="border-red-900/50"
+          accentColor="border-l-red-500"
           data={losses.iran_axis}
         />
         <LossCard
           title="Israel Coalition"
           color="text-blue-400"
           borderColor="border-blue-900/50"
+          accentColor="border-l-blue-500"
           data={losses.israel_coalition}
         />
         <LossCard
           title="Civilians"
           color="text-amber-400"
           borderColor="border-amber-900/50"
+          accentColor="border-l-amber-500"
           data={losses.civilian}
         />
       </div>
