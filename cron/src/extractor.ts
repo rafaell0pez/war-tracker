@@ -89,6 +89,95 @@ Respond with JSON:
 }`;
 }
 
+const WAR_ESTIMATE_PROMPT = `You are a military conflict analyst. Based on the provided extracted conflict data, generate a war status estimate.
+
+RULES:
+- Base your estimate ONLY on the provided data, not prior knowledge.
+- Be conservative with confidence levels.
+- The summary should be factual and analytical, not speculative.
+- currentPhase should reflect the overall trajectory: escalation (increasing intensity), active_conflict (sustained fighting), stalemate (no clear momentum), de_escalation (reducing tensions).
+- Return valid JSON only. No markdown, no explanation.`;
+
+export async function generateWarEstimate(
+  lossEvents: Array<Record<string, unknown>>,
+  timelineEvents: Array<Record<string, unknown>>,
+): Promise<{
+  id: string;
+  estimatedEndDate: string | null;
+  estimatedDurationDays: number | null;
+  currentPhase: string;
+  summary: string;
+  keyFactors: string;
+  confidenceLevel: string;
+  generatedAt: string;
+} | null> {
+  if (lossEvents.length === 0 && timelineEvents.length === 0) {
+    return null;
+  }
+
+  const prompt = `${WAR_ESTIMATE_PROMPT}
+
+LOSS EVENTS (${lossEvents.length}):
+${JSON.stringify(lossEvents.slice(0, 50), null, 2)}
+
+TIMELINE EVENTS (${timelineEvents.length}):
+${JSON.stringify(timelineEvents.slice(0, 20), null, 2)}
+
+Respond with JSON:
+{
+  "estimatedEndDate": "YYYY-MM-DD" or null,
+  "estimatedDurationDays": <number> or null,
+  "currentPhase": "escalation" | "active_conflict" | "stalemate" | "de_escalation",
+  "summary": "2-3 sentence summary of current war status and trajectory",
+  "keyFactors": "comma-separated list of key factors influencing the estimate",
+  "confidenceLevel": "very_low" | "low" | "medium" | "high"
+}`;
+
+  const proc = Bun.spawn(
+    ["claude", "-p", prompt, "--output-format", "json"],
+    { stdout: "pipe", stderr: "pipe", env: { ...process.env } },
+  );
+
+  const stdout = await new Response(proc.stdout).text();
+  const stderr = await new Response(proc.stderr).text();
+  const exitCode = await proc.exited;
+
+  if (exitCode !== 0) {
+    console.error("Claude war estimate failed:", stderr);
+    return null;
+  }
+
+  let parsed: { result?: string };
+  try {
+    parsed = JSON.parse(stdout);
+  } catch {
+    console.error("Failed to parse war estimate output:", stdout.slice(0, 500));
+    return null;
+  }
+
+  const resultText = parsed.result ?? stdout;
+  try {
+    const jsonMatch = resultText.match(/\{[\s\S]*\}/);
+    const data = jsonMatch
+      ? JSON.parse(jsonMatch[0])
+      : JSON.parse(resultText);
+
+    return {
+      id: `estimate-${Date.now()}`,
+      estimatedEndDate: data.estimatedEndDate ?? null,
+      estimatedDurationDays: data.estimatedDurationDays ?? null,
+      currentPhase: data.currentPhase ?? "active_conflict",
+      summary: data.summary ?? "Unable to generate summary.",
+      keyFactors: data.keyFactors ?? "",
+      confidenceLevel: data.confidenceLevel ?? "low",
+      generatedAt: new Date().toISOString(),
+    };
+  } catch {
+    console.error("Failed to parse war estimate result:", resultText.slice(0, 500));
+    return null;
+  }
+}
+
 export async function extractFromTweets(
   tweets: RawTweet[],
 ): Promise<ExtractionResult> {
