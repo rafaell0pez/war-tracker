@@ -16,6 +16,7 @@ const app = await alchemy("war-tracker", {
 
 const db = await D1Database(`war-tracker-db-${env.STAGE}`, {
   migrationsDir: "./apps/worker/src/db/migrations",
+  adopt: true,
 });
 
 const site = await Website("war-tracker-web", {
