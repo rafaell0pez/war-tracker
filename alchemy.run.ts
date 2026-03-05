@@ -30,7 +30,7 @@ const worker = await Worker("war-tracker", {
   compatibilityDate: "2025-01-20",
   compatibilityFlags: ["nodejs_compat"],
   // Domain added via Cloudflare dashboard (token needs Zone:DNS:Edit for API)
-  // domains: isProd ? [{ domainName: "war.gay", adopt: true }] : undefined,
+  // domains: isProd ? [{ domainName: "wars.today", adopt: true }] : undefined,
   dev: {
     port: 8787,
   },

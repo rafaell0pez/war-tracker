@@ -1,4 +1,4 @@
-import { desc, eq } from "drizzle-orm";
+import { desc } from "drizzle-orm";
 import { Hono } from "hono";
 import { createDb } from "../db/client";
 import {
@@ -31,7 +31,6 @@ app.get("/", async (c) => {
     db
       .select()
       .from(cronRuns)
-      .where(eq(cronRuns.status, "completed"))
       .orderBy(desc(cronRuns.completedAt))
       .limit(1),
   ]);

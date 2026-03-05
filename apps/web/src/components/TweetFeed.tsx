@@ -1,3 +1,4 @@
+import { BadgeCheck } from "lucide-react";
 import type { TweetRecord } from "../lib/api";
 import { timeAgo } from "../lib/format";
 
@@ -26,9 +27,9 @@ export default function TweetFeed({ tweets }: Props) {
         {tweets.map((tweet) => (
           <div
             key={tweet.id}
-            className="border-b border-gray-800/50 pb-2 last:border-0"
+            className="border-b border-gray-800/50 pb-3 last:border-0 last:pb-0"
           >
-            <div className="flex items-center gap-2 mb-1">
+            <div className="flex items-center gap-2 mb-1.5">
               <a
                 href={tweet.tweetUrl}
                 target="_blank"
@@ -38,14 +39,14 @@ export default function TweetFeed({ tweets }: Props) {
                 @{tweet.authorUsername}
               </a>
               {tweet.authorVerified && (
-                <span className="text-xs text-blue-500">V</span>
+                <BadgeCheck className="w-3.5 h-3.5 text-blue-500" />
               )}
               <span className="text-xs text-gray-600 ml-auto">
                 {timeAgo(tweet.tweetCreatedAt)}
               </span>
             </div>
             <p className="text-sm text-gray-400 line-clamp-2">{tweet.text}</p>
-            <div className="flex gap-3 mt-1">
+            <div className="flex gap-3 mt-1.5">
               <span className="text-xs text-gray-600">
                 {tweet.likeCount ?? 0} likes
               </span>

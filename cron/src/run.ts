@@ -1,5 +1,5 @@
 import { cleanOld, isProcessed, markProcessed } from "./dedup";
-import { extractFromTweets } from "./extractor";
+import { extractFromTweets, generateWarEstimate } from "./extractor";
 import { pushToWorker } from "./ingest";
 import { SEARCH_QUERIES } from "./queries";
 import { type RawTweet, searchTweets } from "./twitter";
@@ -122,6 +122,25 @@ for (let i = 0; i < newTweets.length; i += BATCH_SIZE) {
 // Mark all new tweets as processed
 markProcessed(newTweets.map((t) => t.id));
 
+// Generate war estimate from accumulated data
+let warEstimateData: Record<string, unknown> | undefined;
+if (allLossEvents.length > 0 || allTimelineEvents.length > 0) {
+  console.log(`[${runId}] Generating war estimate...`);
+  try {
+    const estimate = await generateWarEstimate(allLossEvents, allTimelineEvents);
+    if (estimate) {
+      warEstimateData = estimate;
+      console.log(
+        `[${runId}]   War estimate: phase=${estimate.currentPhase}`,
+      );
+    }
+  } catch (err) {
+    const msg = `War estimate generation failed: ${err}`;
+    console.error(`[${runId}] ${msg}`);
+    errors.push(msg);
+  }
+}
+
 // Push everything to the Worker
 console.log(
   `[${runId}] Pushing to worker: ${tweetRecords.length} tweets, ${allLossEvents.length} loss events, ${allTimelineEvents.length} timeline events`,
@@ -134,6 +153,7 @@ const ingestResult = await pushToWorker(
     tweets: tweetRecords,
     lossEvents: allLossEvents,
     timelineEvents: allTimelineEvents,
+    warEstimate: warEstimateData,
     cronRun: {
       id: runId,
       startedAt,
@@ -142,7 +162,10 @@ const ingestResult = await pushToWorker(
       tweetsProcessed,
       eventsExtracted,
       errors: errors.length > 0 ? JSON.stringify(errors) : null,
-      status: errors.length > 0 ? "failed" : "completed",
+      status:
+        errors.length > 0 && tweetsProcessed === 0 && eventsExtracted === 0
+          ? "failed"
+          : "completed",
     },
   },
 );

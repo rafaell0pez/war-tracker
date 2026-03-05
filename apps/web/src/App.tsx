@@ -1,3 +1,4 @@
+import ConflictMap from "./components/ConflictMap";
 import CountryList from "./components/CountryList";
 import LossCounters from "./components/LossCounters";
 import TimelineView from "./components/TimelineView";
@@ -13,14 +14,14 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-950">
       {/* Header */}
-      <header className="border-b border-gray-800 px-4 py-3">
+      <header className="border-b border-gray-800 px-4 py-4 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h1 className="font-mono text-xl font-bold text-gray-100">
-              war.gay
+            <h1 className="text-lg font-semibold text-gray-100 tracking-tight">
+              Middle East War Monitor
             </h1>
-            <span className="text-xs text-gray-500 hidden sm:inline">
-              Iran / Israel / USA Conflict Tracker
+            <span className="text-xs text-gray-600 font-mono hidden sm:inline">
+              wars.today
             </span>
           </div>
           <div className="flex items-center gap-2">
@@ -38,7 +39,7 @@ export default function App() {
       </header>
 
       {/* Main content */}
-      <main className="max-w-6xl mx-auto px-4 py-6 space-y-6">
+      <main className="max-w-6xl mx-auto px-4 py-8 space-y-8">
         {isLoading && (
           <div className="text-center py-20">
             <p className="font-mono text-sm text-gray-500">Loading data...</p>
@@ -61,7 +62,10 @@ export default function App() {
             {/* War Estimate */}
             <WarEstimate estimate={dashboard.estimate} />
 
-            {/* Two-column layout for countries + timeline */}
+            {/* Conflict Map */}
+            <ConflictMap countries={dashboard.countries} />
+
+            {/* Countries + Timeline */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <CountryList countries={dashboard.countries} />
               <TimelineView events={dashboard.timeline} />
@@ -74,16 +78,14 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-gray-800 px-4 py-4 mt-8">
+      <footer className="border-t border-gray-800 px-4 py-6 mt-12">
         <div className="max-w-6xl mx-auto text-center">
           <p className="text-xs text-gray-600">
-            Data sourced from Twitter/X via OSINT accounts. AI-extracted with
-            confidence scoring. Numbers shown are high-confidence estimates
-            unless toggled.
+            Data aggregated from verified OSINT sources on X/Twitter.
+            Extracted and scored by AI with confidence thresholds.
           </p>
           <p className="text-xs text-gray-700 mt-1">
-            This is an automated tracker, not editorial content. Verify all
-            claims independently.
+            This is an automated intelligence feed, not editorial reporting.
           </p>
         </div>
       </footer>

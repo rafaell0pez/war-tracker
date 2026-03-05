@@ -47,7 +47,7 @@ echo "[4/5] Setting up environment..."
 if [ ! -f /opt/war-tracker/.env.cron ]; then
   cat > /opt/war-tracker/.env.cron << 'ENVEOF'
 TWITTER_API_KEY=new1_23ca876084754df5a650c1c71bf13044
-WORKER_INGEST_URL=https://war.gay/api/internal/ingest
+WORKER_INGEST_URL=https://wars.today/api/internal/ingest
 WORKER_INGEST_SECRET=CHANGE_ME
 ENVEOF
   echo "  Created .env.cron — edit /opt/war-tracker/.env.cron with your WORKER_INGEST_SECRET"
