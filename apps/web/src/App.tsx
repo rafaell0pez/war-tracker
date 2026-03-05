@@ -1,3 +1,4 @@
+import ConflictMap from "./components/ConflictMap";
 import CountryList from "./components/CountryList";
 import LossCounters from "./components/LossCounters";
 import TimelineView from "./components/TimelineView";
@@ -61,7 +62,10 @@ export default function App() {
             {/* War Estimate */}
             <WarEstimate estimate={dashboard.estimate} />
 
-            {/* Two-column layout for countries + timeline */}
+            {/* Conflict Map */}
+            <ConflictMap countries={dashboard.countries} />
+
+            {/* Countries + Timeline */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <CountryList countries={dashboard.countries} />
               <TimelineView events={dashboard.timeline} />

@@ -24,9 +24,7 @@ const SIDE_DOT: Record<string, string> = {
 };
 
 export default function CountryList({ countries }: Props) {
-  const [expanded, setExpanded] = useState<Set<string>>(
-    new Set(CATEGORY_ORDER),
-  );
+  const [expanded, setExpanded] = useState<Set<string>>(new Set<string>());
 
   function toggle(cat: string) {
     setExpanded((prev) => {
